@@ -1,59 +1,35 @@
-import { createServer } from 'vite';
-import { glob } from 'glob';
-import { execSync } from 'child_process';
-import express from 'express';
-import react from '@vitejs/plugin-react';
-import { createHtmlPlugin } from 'vite-plugin-html';
-import { configureExpressApp } from './vite-api.mjs';
+import { handleShutdown, startServer } from './server.mjs';
+import { findAvailablePort } from './utils.mjs';
 
-const projectName = process.argv.pop();
-const projectPaths = await glob(`./module*/*/${projectName}`);
+async function main() {
+  const args = process.argv.slice(2);
+  const projectName = args[0];
 
-if (projectPaths.length !== 1) {
-  throw new Error(
-    `Project not found or multiple projects with the same name exist: ${JSON.stringify(
-      projectPaths
-    )}`
-  );
+  if (!projectName) {
+    console.error('Please provide the project name.');
+    process.exit(1);
+  }
+
+  const port = await findAvailablePort(3000);
+
+  let serverProcess;
+  let viteServer;
+
+  try {
+    const { serverProcess: sp, viteServer: vs } = await startServer(
+      projectName,
+      port
+    );
+    serverProcess = sp;
+    viteServer = vs;
+
+    // Register cleanup handlers
+    process.on('SIGINT', () => handleShutdown(serverProcess, viteServer));
+    process.on('SIGTERM', () => handleShutdown(serverProcess, viteServer));
+  } catch (err) {
+    console.error('Error when starting server:', err);
+    process.exit(1);
+  }
 }
 
-if (projectPaths[0].includes('angular')) {
-  execSync('npm install', { stdio: 'inherit', cwd: projectPaths[0] });
-  execSync('npm run start', { stdio: 'inherit', cwd: projectPaths[0] });
-} else {
-  const server = await createServer({
-    configFile: false,
-    root: projectPaths[0],
-    server: {
-      port: 3000,
-    },
-    plugins: [
-      react(),
-      createHtmlPlugin({
-        inject: {
-          data: {
-            ARTICLES_API:
-              'http://localhost:3000/api/data/articles?timeout=3000',
-            AUTHORS_API: 'http://localhost:3000/api/data/authors?timeout=5000',
-            COMMENTS_API:
-              'http://localhost:3000/api/data/comments?timeout=2000',
-            BATCH_API:
-              'http://localhost:3000/api/data/batch?resources=articles,authors,comments&timeout=5000',
-          },
-        },
-      }),
-      {
-        name: 'express-plugin',
-        configureServer(server) {
-          const app = express();
-          configureExpressApp(app);
-          server.middlewares.use(app);
-        },
-      },
-    ],
-  });
-  await server.listen();
-
-  server.printUrls();
-  server.bindCLIShortcuts({ print: true });
-}
+main();

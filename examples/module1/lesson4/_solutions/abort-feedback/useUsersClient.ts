@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const API_URL = '/api/data/users?timeout=10000';
 
