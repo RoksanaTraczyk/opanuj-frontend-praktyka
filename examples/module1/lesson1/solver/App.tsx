@@ -12,11 +12,15 @@ const App = () => {
     setResult(func(firstNumber, secondNumber));
   };
 
+  const parseInputValue = (value: string) => {
+      return value === '' ? 0 : parseFloat(value);
+  };
+
   return (
     <div>
       <div className="grid grid-cols-2 gap-x-4">
-        <InputComponent value={firstNumber} onChange={(e: any) => setFirstNumber(parseFloat(e.target.value))}/>
-        <InputComponent value={secondNumber} onChange={(e: any) => setSecondNumber(parseFloat(e.target.value))}/>
+        <InputComponent value={firstNumber} onChange={(e: any) => setFirstNumber(parseInputValue(e.target.value))}/>
+        <InputComponent value={secondNumber} onChange={(e: any) => setSecondNumber(parseInputValue(e.target.value))}/>
       </div>
       <div className="grid grid-cols-4 gap-x-4 my-4">
         <ButtonComponent buttonName="+" onClick={() => calculate(add)}/>
