@@ -19,7 +19,7 @@ test.describe('Shop with Context', () => {
     page,
   }) => {
     await page.getByTestId('add-to-cart-button').first().click();
-
+    console.log('LOGS: ', logs)
     expect(logs).not.toContain('Header has rendered (3)');
   });
 
@@ -27,7 +27,7 @@ test.describe('Shop with Context', () => {
     page,
   }) => {
     await page.getByTestId('add-to-cart-button').first().click();
-
+    console.log('LOGS: ', logs)
     expect(logs).not.toContain('Product has rendered (4)');
   });
 });
