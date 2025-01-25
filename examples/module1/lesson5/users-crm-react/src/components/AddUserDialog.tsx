@@ -3,9 +3,10 @@ import { useState } from 'react';
 interface AddUserDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  refreshUsers: () => void;
 }
 
-const AddUserDialog = ({ isOpen, onClose }: AddUserDialogProps) => {
+const AddUserDialog = ({ isOpen, onClose, refreshUsers }: AddUserDialogProps) => {
   const [name, setName] = useState('');
   const [status, setStatus] = useState('New');
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,9 @@ const AddUserDialog = ({ isOpen, onClose }: AddUserDialogProps) => {
         },
         body: JSON.stringify({ name, status }),
       });
+
+      console.log(response)
+      if(response.ok) refreshUsers();
 
       if (!response.ok) throw new Error('Failed to add user');
 

@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import type { User } from '../model/User';
 import { getStatusColor } from '../utils/statusColors';
 
-const UsersList = () => {
+interface UserListProps {
+  refreshComponent: number;
+}
+
+const UsersList = ({ refreshComponent }: UserListProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +26,7 @@ const UsersList = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [refreshComponent]);
 
   if (loading) return <div>Loading users...</div>;
   if (error) return <div>Error: {error}</div>;

@@ -5,6 +5,9 @@ import AddUserDialog from './components/AddUserDialog';
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [refreshComponent, setRefreshComponent] = useState(1);
+
+
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -32,10 +35,11 @@ function App() {
       </div>
 
       <StatusStats />
-      <UsersList />
+      <UsersList refreshComponent={refreshComponent}/>
 
       <AddUserDialog
         isOpen={isDialogOpen}
+        refreshUsers={() => setRefreshComponent(refreshComponent + 1)}
         onClose={() => setIsDialogOpen(false)}
       />
     </main>
