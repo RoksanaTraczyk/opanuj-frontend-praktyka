@@ -10,10 +10,10 @@ test('login into wiki account', async ({ page }) => {
   await mainPage.goToLoginPage();
 
   const loginPage = new LoginPage(page);
-  await loginPage.fillLoginForm(process.env.USERNAME!, process.env.PASSWORD!);
+  await loginPage.fillLoginForm(process.env.WIKI_USERNAME!, process.env.WIKI_PASSWORD!);
 
   await expect(page).toHaveURL(URLs.MAIN_PAGE);
-  await expect(mainPage.getNavigation()).toContainText(process.env.USERNAME!, {
+  await expect(mainPage.getNavigation()).toContainText(process.env.WIKI_USERNAME!, {
     ignoreCase: true,
   });
 

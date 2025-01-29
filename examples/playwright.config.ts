@@ -3,8 +3,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
 
-const BASE_URL = 'http://localhost:4200';
-const PROJECT_DIR = './module1/lesson2/_solutions/signals-angular';
+const BASE_URL = 'https://en.wikipedia.org';
+const PROJECT_DIR = './module2/lesson2/base';
+// const PROJECT_DIR = './module2/lesson2/extended'; //for extended module
 const SETUP_PATH_REGEX = '**/*.setup.ts';
 const LOGGED_IN_PATH_REGEX = '**/logged-in/*.spec.ts';
 
