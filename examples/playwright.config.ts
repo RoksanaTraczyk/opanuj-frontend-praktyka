@@ -5,6 +5,7 @@ dotenv.config();
 
 const BASE_URL = 'https://en.wikipedia.org';
 const PROJECT_DIR = './module2/lesson2/base';
+// const PROJECT_DIR = './module2/lesson2/extended'; //for extended module
 const SETUP_PATH_REGEX = '**/*.setup.ts';
 const LOGGED_IN_PATH_REGEX = '**/logged-in/*.spec.ts';
 
