@@ -11,6 +11,10 @@ export interface DailyWeather {
   averageTemperature: number;
 }
 
+// export interface NestedDailyWeather {
+//   Weather: DailyWeather[];
+// }
+
 export interface LocationWeather {
   city: string;
   country: string;
